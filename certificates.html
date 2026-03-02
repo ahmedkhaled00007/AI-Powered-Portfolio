@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Leaderboard | أثر</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-secondary: #f9d71c;
+            --gold-dark: #b8860b;
+            --charcoal-bg: #050505;
+            --gold-glow: 0 0 30px rgba(212, 175, 55, 0.2);
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body {
+            background-color: var(--charcoal-bg);
+            color: #f3f4f6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+        }
+
+        .elite-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--spacing-64) var(--spacing-24);
+        }
+
+        .elite-header {
+            text-align: center;
+            margin-bottom: var(--spacing-80);
+            position: relative;
+        }
+
+        .elite-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            margin-bottom: var(--spacing-16);
+            background: linear-gradient(135deg, #fff 30%, var(--gold-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .elite-subtitle {
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            font-weight: 800;
+            font-size: var(--text-xs);
+            opacity: 0.9;
+        }
+
+        /* Leaderboard List (Single Row Layout) */
+        .leaderboard-grid-elite {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-64);
+            margin-top: var(--spacing-64);
+        }
+
+        .elite-card {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            will-change: transform, opacity;
+        }
+
+        .elite-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), var(--gold-glow);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+
+        .cert-image-box {
+            width: 100%;
+            height: 500px;
+            /* Much taller for full row display */
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .cert-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Professional display showing whole certificate */
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0.9;
+        }
+
+        .elite-card:hover .cert-image-box img {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        .cert-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 70%, rgba(5, 5, 5, 0.8));
+            pointer-events: none;
+        }
+
+        .elite-content {
+            padding: var(--spacing-48) var(--spacing-32);
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .elite-name {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-12);
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .elite-org {
+            color: var(--gold-primary);
+            font-weight: 700;
+            font-size: var(--text-base);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .back-btn-gold {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800;
+            margin-bottom: var(--spacing-48);
+            transition: all 0.4s ease;
+            opacity: 0.5;
+            letter-spacing: 2px;
+            font-size: var(--text-sm);
+        }
+
+        .back-btn-gold:hover {
+            opacity: 1;
+            color: var(--gold-primary);
+            transform: translateX(-5px);
+        }
+
+        /* Premium Shimmer and Shine */
+        .elite-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(212, 175, 55, 0.1),
+                    transparent);
+            transform: skewX(-25deg);
+            transition: 0.8s;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .elite-card:hover::before {
+            left: 150%;
+        }
+    </style>
+</head>
+
+<body class="animate-fade-in">
+    <div class="elite-container">
+        <a href="index.html" class="back-btn-gold">
+            <span>←</span> RETURN TO JOURNEY
+        </a>
+
+        <header class="elite-header">
+            <p class="elite-subtitle animate-fade-up">Achievements</p>
+            <h1 class="elite-title animate-fade-up">Leaderboards</h1>
+        </header>
+
+        <div class="leaderboard-grid-elite">
+            <!-- Rank 12: Deep Learning Specialization -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.05s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/12-Deeplearning.ai-deep learning.png"
+                        alt="Deep Learning Specialization" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Deep Learning Specialization</h3>
+                    <p class="elite-org">Deeplearning.ai</p>
+                </div>
+            </article>
+
+            <!-- Rank 11: AgenticAI -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.1s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/11-Nvidia-AgenticAI & RAGs_page-0001.jpg"
+                        alt="AgenticAI & RAGs" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">AgenticAI & RAGs</h3>
+                    <p class="elite-org">Nvidia</p>
+                </div>
+            </article>
+
+            <!-- Rank 10: Deep Learning -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.15s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/10-Mahara-Introduction to Deep learning_page-0001.jpg"
+                        alt="Introduction to Deep learning" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Introduction to Deep learning</h3>
+                    <p class="elite-org">Mahara</p>
+                </div>
+            </article>
+
+            <!-- Rank 09: GenAI -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.2s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/09-ITI-GenAI Round (1)_page-0001.jpg" alt="GenAI Round (1)"
+                        loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">GenAI Round (1)</h3>
+                    <p class="elite-org">ITI</p>
+                </div>
+            </article>
+
+            <!-- Rank 08: Introduction to GenAI -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.25s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/08-Nvidia-Introduction to GenAI_page-0001.jpg"
+                        alt="Introduction to GenAI" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Introduction to GenAI</h3>
+                    <p class="elite-org">Nvidia</p>
+                </div>
+            </article>
+
+            <!-- Rank 07: SQL Server -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.3s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/07-Microsoft-SQL Server_page-0001.jpg" alt="SQL Server"
+                        loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">SQL Server</h3>
+                    <p class="elite-org">Microsoft</p>
+                </div>
+            </article>
+
+            <!-- Rank 06: Machine Learning -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.35s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/06-IBM-Introduction to Machine Learning_page-0001.jpg"
+                        alt="Introduction to Machine Learning" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Introduction to Machine Learning</h3>
+                    <p class="elite-org">IBM</p>
+                </div>
+            </article>
+
+            <!-- Rank 05: Data Analysis -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.4s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/05-Tharaa-Data Analysis_page-0001.jpg" alt="Data Analysis"
+                        loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Data Analysis</h3>
+                    <p class="elite-org">Tharaa</p>
+                </div>
+            </article>
+
+            <!-- Rank 04: Power BI -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.45s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/04-Microsoft-Power BI Data analyst_page-0001.jpg"
+                        alt="Power BI Data analyst" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Power BI Data analyst</h3>
+                    <p class="elite-org">Microsoft</p>
+                </div>
+            </article>
+
+            <!-- Rank 03: Data Analysis with Python -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.5s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/03-IBM-Data Analysis with Python_page-0001.jpg"
+                        alt="Data Analysis with Python" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Data Analysis with Python</h3>
+                    <p class="elite-org">IBM</p>
+                </div>
+            </article>
+
+            <!-- Rank 02: Deep Learning -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.55s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/02-Nvidia-Getting Started with Deep Learning_page-0001.jpg"
+                        alt="Getting Started with Deep Learning" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Getting Started with Deep Learning</h3>
+                    <p class="elite-org">Nvidia</p>
+                </div>
+            </article>
+
+            <!-- Rank 01: Neural Networks -->
+            <article class="elite-card animate-fade-up" style="animation-delay: 0.6s;">
+                <div class="cert-image-box">
+                    <img src="css/RECORCES/Certifications/01-Deeplearning.ai-Neural Networks and Deep Learning_page-0001.jpg"
+                        alt="Neural Networks and Deep Learning" loading="lazy" decoding="async">
+                    <div class="cert-overlay"></div>
+                </div>
+                <div class="elite-content">
+                    <h3 class="elite-name">Neural Networks and Deep Learning</h3>
+                    <p class="elite-org">Deeplearning.ai</p>
+                </div>
+            </article>
+        </div>
+    </div>
+
+</body>
+
+</html>

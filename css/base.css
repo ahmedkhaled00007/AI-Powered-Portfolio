@@ -1,0 +1,180 @@
+/* CSS Reset and Normalize */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text-main);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Base Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text-main);
+  margin-bottom: var(--spacing-16);
+}
+
+h1 {
+  font-size: var(--text-5xl);
+}
+
+h2 {
+  font-size: var(--text-4xl);
+}
+
+h3 {
+  font-size: var(--text-3xl);
+}
+
+h4 {
+  font-size: var(--text-2xl);
+}
+
+p {
+  margin-bottom: var(--spacing-24);
+  color: var(--color-text-muted);
+}
+
+/* Default Link Styles */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-normal);
+}
+
+a:hover {
+  color: var(--color-secondary);
+}
+
+/* Premium Button Styles */
+button,
+.btn {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  padding: 16px 40px;
+  background: var(--gradient-main);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: transform var(--transition-normal),
+    box-shadow var(--transition-normal),
+    background var(--transition-normal),
+    color var(--transition-normal);
+  will-change: transform, box-shadow;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  overflow: hidden;
+  box-shadow: var(--glow-primary);
+  z-index: 1;
+}
+
+button:hover,
+.btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(124, 58, 237, 0.5);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+  color: #ffffff !important;
+  /* Force white text to override global link hover */
+}
+
+/* Shimmer Effect for Primary Button */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+  transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+  /* Place in front of background but transition will move it */
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.2);
+}
+
+/* List Styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Image Styles */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+/* Utility: Glass Box */
+.glass {
+  background: var(--color-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  will-change: transform, opacity;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
