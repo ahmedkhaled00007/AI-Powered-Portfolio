@@ -26,6 +26,58 @@ function initNavigation() {
 
   // Initialize mobile menu toggle
   initMobileMenu();
+
+  // Initialize scroll state management (reload and restoration)
+  initScrollManagement();
+}
+
+/**
+ * Manage page scroll restoration and reload behavior
+ */
+function initScrollManagement() {
+  // 1. Force manual scroll restoration to prevent browser from auto-jumping on refresh
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  // 2. Handle scroll restoration when returning from a sub-page
+  const savedScrollPos = sessionStorage.getItem('portfolioScrollPos');
+  const isReturn = new URLSearchParams(window.location.search).get('return') === 'true';
+
+  if (savedScrollPos && isReturn) {
+    // If arriving back specifically from a "RETURN" button, restore position
+    // Use a slightly longer timeout and requestAnimationFrame to ensure the DOM is fully rendered
+    setTimeout(() => {
+      window.requestAnimationFrame(() => {
+        window.scrollTo({
+          top: parseInt(savedScrollPos, 10),
+          behavior: 'instant' // Force instant jump, overriding any smooth CSS
+        });
+      });
+      // Clear the URL parameter so refreshing the page doesn't re-trigger this
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }, 50);
+  } else {
+    // 3. Normal fresh load or manual reload - force scroll to top
+    // Also clear any lingering scroll pos just in case
+    sessionStorage.removeItem('portfolioScrollPos');
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }, 10);
+  }
+
+  // 4. Track scroll position when clicking specific internal links
+  const trackableLinks = document.querySelectorAll('.btn-certificates, .btn-awards, .btn');
+
+  trackableLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && !href.startsWith('#')) {
+      link.addEventListener('click', () => {
+        // Save exact pixel position instantly on click
+        sessionStorage.setItem('portfolioScrollPos', window.scrollY);
+      });
+    }
+  });
 }
 
 /**

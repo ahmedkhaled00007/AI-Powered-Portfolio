@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honors & Awards | Midnight Platinum</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --platinum: #e5e4e2;
+            --platinum-dim: #c0c0c0;
+            --platinum-glow: 0 0 30px rgba(229, 228, 226, 0.2);
+            --midnight-blue: #020617;
+            --midnight-accent: #1e293b;
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --platinum-gradient: linear-gradient(135deg, #ffffff 0%, #e5e4e2 50%, #a0a0a0 100%);
+        }
+
+        body {
+            background-color: var(--midnight-blue);
+            color: #f3f4f6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 10%, rgba(229, 228, 226, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(30, 41, 59, 0.1) 0%, transparent 40%);
+        }
+
+        .awards-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: var(--spacing-64) var(--spacing-24);
+        }
+
+        .awards-header {
+            text-align: center;
+            margin-bottom: var(--spacing-80);
+            position: relative;
+        }
+
+        .awards-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: var(--spacing-16);
+            background: var(--platinum-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .awards-subtitle {
+            color: var(--platinum-dim);
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            font-weight: 700;
+            font-size: var(--text-xs);
+            opacity: 0.8;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-48);
+            margin-top: var(--spacing-64);
+        }
+
+        .award-card {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid rgba(229, 228, 226, 0.1);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .award-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--platinum);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), var(--platinum-glow);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .award-img-box {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .award-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: grayscale(20%);
+        }
+
+        .award-card:hover .award-img-box img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        .award-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(2, 6, 23, 0.9));
+        }
+
+        .award-content {
+            padding: var(--spacing-32);
+            text-align: center;
+            border-top: 1px solid rgba(229, 228, 226, 0.05);
+        }
+
+        .award-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-8);
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .award-info {
+            color: var(--platinum-dim);
+            font-weight: 600;
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .back-btn-platinum {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--platinum-dim);
+            text-decoration: none;
+            font-weight: 700;
+            margin-bottom: var(--spacing-48);
+            transition: all 0.4s ease;
+            letter-spacing: 3px;
+            font-size: var(--text-xs);
+        }
+
+        .back-btn-platinum:hover {
+            color: var(--platinum);
+            transform: translateX(-5px);
+        }
+
+        /* Platinum Shimmer Effect */
+        .award-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(229, 228, 226, 0.08),
+                    transparent);
+            transform: skewX(-20deg);
+            transition: 1s;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .award-card:hover::before {
+            left: 150%;
+        }
+
+        @media (max-width: 768px) {
+            .award-img-box {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body class="animate-fade-in">
+    <div class="awards-container">
+        <a href="index.html?return=true" class="back-btn-platinum">
+            <span>←</span> RETURN TO JOURNEY
+        </a>
+
+        <header class="awards-header">
+            <p class="awards-subtitle animate-fade-up">Elite Recognition</p>
+            <h1 class="awards-title animate-fade-up">Honors & Awards</h1>
+        </header>
+
+        <div class="awards-grid">
+            <!-- Digitopia Achievement -->
+            <article class="award-card animate-fade-up" style="animation-delay: 0.1s;">
+                <div class="award-img-box">
+                    <img src="awards/Digitopia.png" alt="Digitopia Achievement" loading="lazy">
+                    <div class="award-overlay"></div>
+                </div>
+                <div class="award-content">
+                    <h3 class="award-name">Digitopia Achievement</h3>
+                    <p class="award-info">Excellence in Technology</p>
+                </div>
+            </article>
+
+            <!-- Art Competition Award -->
+            <article class="award-card animate-fade-up" style="animation-delay: 0.2s;">
+                <div class="award-img-box">
+                    <img src="awards/Art_Compition.jpg" alt="Art Competition Award" loading="lazy">
+                    <div class="award-overlay"></div>
+                </div>
+                <div class="award-content">
+                    <h3 class="award-name">Art Competition</h3>
+                    <p class="award-info">Creative Excellence Award</p>
+                </div>
+            </article>
+
+            <!-- Huawei Attendance -->
+            <article class="award-card animate-fade-up" style="animation-delay: 0.3s;">
+                <div class="award-img-box">
+                    <img src="awards/HUAWIE_Attendace.png" alt="Huawei Attendance Certificate" loading="lazy">
+                    <div class="award-overlay"></div>
+                </div>
+                <div class="award-content">
+                    <h3 class="award-name">Huawei AI Program</h3>
+                    <p class="award-info">Program Completion & Attendance</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</body>
+
+</html>

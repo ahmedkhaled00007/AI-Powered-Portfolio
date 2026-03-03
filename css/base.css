@@ -169,6 +169,11 @@ img {
   will-change: transform, opacity;
 }
 
+/* Enable native Cross-Document View Transitions (SPA feel with zero JS) */
+@view-transition {
+  navigation: auto;
+}
+
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   * {

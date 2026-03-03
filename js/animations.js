@@ -6,50 +6,16 @@
 
 /**
  * Initialize scroll-triggered animations
- * Sets up Intersection Observer to animate sections when they enter viewport
+ * Disabled per user request - immediately shows all elements
  */
 function initAnimations() {
-  // Check if Intersection Observer is supported
-  if (!('IntersectionObserver' in window)) {
-    console.warn('Intersection Observer not supported, animations disabled');
-    return;
-  }
-
-  // Select all sections that should be animated on scroll
-  const sectionsToAnimate = document.querySelectorAll('.animate-on-scroll-custom');
-
-  // Configure Intersection Observer options
-  const observerOptions = {
-    root: null, // Use viewport as root
-    rootMargin: '0px',
-    threshold: 0.15 // Trigger when 15% of element is visible
-  };
-
-  // Create callback function for when elements intersect
-  const observerCallback = (entries, observer) => {
-    entries.forEach(entry => {
-      // When element enters viewport
-      if (entry.isIntersecting) {
-        const section = entry.target;
-
-        // Apply animation class based on section
-        applyAnimationToSection(section);
-
-        // Stop observing this element (animate only once)
-        observer.unobserve(section);
-      }
-    });
-  };
-
-  // Create the Intersection Observer
-  const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-  // Observe all sections
-  sectionsToAnimate.forEach(section => {
-    // Add initial class for elements that will be animated
-    section.classList.add('animate-on-scroll');
-    observer.observe(section);
+  // Immediately activate all scroll-reveal elements
+  document.querySelectorAll('.scroll-reveal').forEach(el => {
+    el.classList.add('active');
   });
+
+  // Also immediately trigger any other animation classes if needed globally
+  // (Most entrance animations like .animate-fade-up trigger on load anyway)
 }
 
 /**
